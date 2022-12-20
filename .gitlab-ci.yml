@@ -13,3 +13,4 @@ package:
     - docker push registry.gitlab.com/$GITLAB_USER/$PROJECT_NAME
   after_script:
     - docker logout
+
