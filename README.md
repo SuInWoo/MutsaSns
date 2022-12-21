@@ -25,3 +25,8 @@
 - Swagger UI 적용
 - ec2 Docker 세팅
 - CI/CD 구성
+
+## 2일차(22.12.21)
+
+- Join 구현
+- Login 구현
