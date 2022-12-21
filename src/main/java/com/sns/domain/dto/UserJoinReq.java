@@ -15,13 +15,11 @@ public class UserJoinReq {
 
     private String userName;
     private String password;
-    private UserRole userRole;
 
     public User toEntity(String password) {
         return User.builder()
                 .userName(this.userName)
                 .password(password)
-                .userRole(this.userRole)
                 .build();
     }
 }
