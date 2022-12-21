@@ -29,7 +29,7 @@ public class UserService {
         userRepo.findByUserName(userJoinReq.getUserName())
                 .ifPresent(user -> {
                     throw new UserException(ErrorCode.DUPLICATED_USER_NAME,
-                            String.format("UserName: %s", userJoinReq.getUserName()));
+                            ErrorCode.DUPLICATED_USER_NAME.getMessage());
                 });
 
         // 회원가입 .save()
