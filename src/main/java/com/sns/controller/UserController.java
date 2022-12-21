@@ -1,9 +1,7 @@
 package com.sns.controller;
 
 import com.sns.domain.Response;
-import com.sns.domain.dto.UserDto;
-import com.sns.domain.dto.UserJoinReq;
-import com.sns.domain.dto.UserJoinRes;
+import com.sns.domain.dto.*;
 import com.sns.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,5 +20,11 @@ public class UserController {
     public Response<UserJoinRes> join(@RequestBody UserJoinReq joinReq){
         UserDto userDto = userService.join(joinReq);
         return Response.success(new UserJoinRes(userDto.getId(), userDto.getUserName()));
+    }
+
+    @PostMapping("/login")
+    public Response<UserLoginRes> login(@RequestBody UserLoginReq loginReq){
+        String token = userService.login(loginReq.getUserName(), loginReq.getPassword());
+        return Response.success(new UserLoginRes(token));
     }
 }
