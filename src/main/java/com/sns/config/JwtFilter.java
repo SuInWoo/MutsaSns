@@ -1,6 +1,6 @@
 package com.sns.config;
 
-import com.sns.domain.entity.User;
+import com.sns.domain.entity.user.User;
 import com.sns.service.UserService;
 import com.sns.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;

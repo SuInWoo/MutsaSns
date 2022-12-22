@@ -1,6 +1,6 @@
 package com.sns.domain.dto.user;
 
-import com.sns.domain.entity.UserRole;
+import com.sns.domain.entity.user.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

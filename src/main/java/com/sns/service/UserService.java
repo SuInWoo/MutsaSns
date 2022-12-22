@@ -2,7 +2,7 @@ package com.sns.service;
 
 import com.sns.domain.dto.user.UserDto;
 import com.sns.domain.dto.user.UserJoinReq;
-import com.sns.domain.entity.User;
+import com.sns.domain.entity.user.User;
 import com.sns.exception.ErrorCode;
 import com.sns.exception.UserException;
 import com.sns.repository.UserRepo;
