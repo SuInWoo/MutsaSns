@@ -2,7 +2,7 @@ package com.sns.config;
 
 import com.sns.domain.entity.User;
 import com.sns.service.UserService;
-import com.sns.utils.JwtTokenUtil;
+import com.sns.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +21,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
-public class JwtTokenFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
 
     private final UserService userService;
     private final String secretKey;
@@ -55,13 +55,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         // 토큰 기간 만료
-        if (JwtTokenUtil.isExpired(token, secretKey)) {
+        if (JwtUtil.isExpired(token, secretKey)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         // Token에서 Claim에서 UserName꺼내기
-        String userName = JwtTokenUtil.getUserName(token, secretKey);
+        String userName = JwtUtil.getUserName(token, secretKey);
         log.info("userName:{}", userName);
 
         // UserDetail가져오기

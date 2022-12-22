@@ -1,12 +1,12 @@
 package com.sns.service;
 
-import com.sns.domain.dto.UserDto;
-import com.sns.domain.dto.UserJoinReq;
+import com.sns.domain.dto.user.UserDto;
+import com.sns.domain.dto.user.UserJoinReq;
 import com.sns.domain.entity.User;
 import com.sns.exception.ErrorCode;
 import com.sns.exception.UserException;
 import com.sns.repository.UserRepo;
-import com.sns.utils.JwtTokenUtil;
+import com.sns.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -59,7 +59,7 @@ public class UserService {
         }
 
         // 두 가지 확인이 pass면 Token 발행
-        return JwtTokenUtil.createToken(userName, secretKey, expiredTimeMs);   // 1시간 짜리 토큰
+        return JwtUtil.createToken(userName, secretKey, expiredTimeMs);   // 1시간 짜리 토큰
     }
 
     public User getUserByUserName(String userName) {

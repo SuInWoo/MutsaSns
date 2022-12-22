@@ -1,7 +1,7 @@
 package com.sns.controller;
 
-import com.sns.domain.Response;
-import com.sns.domain.dto.*;
+import com.sns.domain.dto.Response;
+import com.sns.domain.dto.user.*;
 import com.sns.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

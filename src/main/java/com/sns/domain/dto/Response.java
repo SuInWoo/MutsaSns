@@ -1,4 +1,4 @@
-package com.sns.domain;
+package com.sns.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

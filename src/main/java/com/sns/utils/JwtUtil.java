@@ -6,7 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
 
-public class JwtTokenUtil {
+public class JwtUtil {
 
     private static Claims extractClaims(String token, String key) {
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();

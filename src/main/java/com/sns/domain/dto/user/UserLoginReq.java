@@ -1,18 +1,13 @@
-package com.sns.domain.dto;
+package com.sns.domain.dto.user;
 
-import com.sns.domain.entity.UserRole;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-public class UserDto {
-    private Long id;
+public class UserLoginReq {
     private String userName;
     private String password;
-    private UserRole userRole;
 }
