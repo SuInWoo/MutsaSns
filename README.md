@@ -17,7 +17,7 @@
 
 ## ERD
 
-![img_1.png](img_1.png)
+![img.png](img.png)
 
 ## 1일차(22.12.20)
 
