@@ -49,8 +49,8 @@ public class UserService {
 
         //userName이 있는지 확인
         User user = userRepo.findByUserName(userName).orElseThrow(
-                () -> new UserException(ErrorCode.NOT_FOUND,
-                        ErrorCode.NOT_FOUND.getMessage()));
+                () -> new UserException(ErrorCode.USERNAME_NOT_FOUND,
+                        ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
         // password 일치 여부 확인
         if (!encoder.matches(password, user.getPassword())) {
@@ -64,8 +64,8 @@ public class UserService {
 
     public User getUserByUserName(String userName) {
         return userRepo.findByUserName(userName)
-                .orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND,
-                        ErrorCode.NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND,
+                        ErrorCode.USERNAME_NOT_FOUND.getMessage()));
     }
 
 }
