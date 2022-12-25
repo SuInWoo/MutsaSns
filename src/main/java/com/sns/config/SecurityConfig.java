@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/users/join", "/api/v1/users/login").permitAll() // join, login은 언제나 가능
-                .antMatchers(HttpMethod.POST, "/api/v1/**").authenticated() // permitAll 다음에 만들어줘야함 - 문만들기
+                .antMatchers(HttpMethod.POST, "/api/v1/posts", "/api/v1/posts/*").authenticated() // permitAll 다음에 만들어줘야함 - 문만들기
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt사용하는 경우 씀

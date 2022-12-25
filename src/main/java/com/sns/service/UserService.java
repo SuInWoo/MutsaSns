@@ -4,7 +4,7 @@ import com.sns.domain.dto.user.UserDto;
 import com.sns.domain.dto.user.UserJoinReq;
 import com.sns.domain.entity.user.User;
 import com.sns.exception.ErrorCode;
-import com.sns.exception.UserException;
+import com.sns.exception.AppException;
 import com.sns.repository.UserRepo;
 import com.sns.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class UserService {
         // 있으면 에러 처리
         userRepo.findByUserName(userJoinReq.getUserName())
                 .ifPresent(user -> {
-                    throw new UserException(ErrorCode.DUPLICATED_USER_NAME,
+                    throw new AppException(ErrorCode.DUPLICATED_USER_NAME,
                             ErrorCode.DUPLICATED_USER_NAME.getMessage());
                 });
 
@@ -49,12 +49,12 @@ public class UserService {
 
         //userName이 있는지 확인
         User user = userRepo.findByUserName(userName).orElseThrow(
-                () -> new UserException(ErrorCode.USERNAME_NOT_FOUND,
+                () -> new AppException(ErrorCode.USERNAME_NOT_FOUND,
                         ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
         // password 일치 여부 확인
         if (!encoder.matches(password, user.getPassword())) {
-            throw new UserException(ErrorCode.INVALID_PASSWORD,
+            throw new AppException(ErrorCode.INVALID_PASSWORD,
                     ErrorCode.INVALID_PASSWORD.getMessage());
         }
 
@@ -64,7 +64,7 @@ public class UserService {
 
     public User getUserByUserName(String userName) {
         return userRepo.findByUserName(userName)
-                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND,
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND,
                         ErrorCode.USERNAME_NOT_FOUND.getMessage()));
     }
 
