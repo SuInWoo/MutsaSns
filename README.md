@@ -1,6 +1,6 @@
 # Final Project - MutsaSNS
 - Swagger
-  - http://ec2-15-164-170-150.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
+  - http://ec2-15-164-129-11.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
 
 ## 프로젝트 소개
 멋쟁이 사자처럼 백엔드스쿨 2기 개인 프로젝트
@@ -30,3 +30,12 @@
 
 - Join 구현
 - Login 구현
+
+## 3~4일차(22.12.22 ~ 22.12.25)
+
+- CRUD 구현
+
+## 5일차(22.12.26)
+
+- UserController Test 추가
+- PostController Test 추가
