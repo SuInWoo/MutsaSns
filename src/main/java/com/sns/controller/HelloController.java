@@ -11,6 +11,6 @@ public class HelloController {
 
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
-        return ResponseEntity.ok().body("darkchocolate");
+        return ResponseEntity.ok().body("happy_new_year");
     }
 }
