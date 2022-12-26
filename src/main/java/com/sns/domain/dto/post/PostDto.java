@@ -34,8 +34,6 @@ public class PostDto {
                 .title(post.getTitle())
                 .body(post.getBody())
                 .userName(userName)
-                .createdAt(post.getCreatedAt())
-                .lastModifiedAt(post.getLastModifiedAt())
                 .build();
     }
 

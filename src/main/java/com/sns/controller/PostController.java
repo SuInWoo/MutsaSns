@@ -4,6 +4,7 @@ import com.sns.domain.dto.Response;
 import com.sns.domain.dto.post.*;
 import com.sns.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
+@Slf4j
 public class PostController {
 
     private final PostService postService;
@@ -20,9 +22,10 @@ public class PostController {
     //CRUD
 
     //Create
-    @PostMapping("")
+    @PostMapping
     public Response<PostCreateRes>write(@RequestBody PostCreateReq createReq, @ApiIgnore Authentication authentication) {
         String name = authentication.getName();
+        log.info(name);
         PostDto postDto = postService.write(createReq, name);
         return Response.success(new PostCreateRes("포스트 등록 완료", postDto.getPostId()));
     }

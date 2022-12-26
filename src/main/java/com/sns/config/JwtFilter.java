@@ -56,6 +56,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // 토큰 기간 만료
         if (JwtUtil.isExpired(token, secretKey)) {
+            log.error("token 만료");
             filterChain.doFilter(request, response);
             return;
         }
@@ -69,9 +70,10 @@ public class JwtFilter extends OncePerRequestFilter {
         log.info("userRole:{}", user.getUserRole());
 
         //문 열어주기, Role 바인딩
+        log.info("유저이름{}", user.getUserName());
         UsernamePasswordAuthenticationToken authenticationToken = new
                 UsernamePasswordAuthenticationToken(user.getUserName(), null,
-                List.of(new SimpleGrantedAuthority(user.getUserRole().name())));
+                List.of(new SimpleGrantedAuthority("USER")));
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken); // 권한 부여
         filterChain.doFilter(request, response);

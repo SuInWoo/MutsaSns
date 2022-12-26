@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,9 +31,7 @@ public class PostService {
 
         Post savedPost = postRepo.save(Post.of(createReq.getTitle(), createReq.getBody(), user));
 
-        PostDto postDto = PostDto.builder()
-                .postId(savedPost.getId())
-                .build();
+        PostDto postDto = PostDto.of(savedPost, user.getUserName());
 
         return postDto;
     }
