@@ -3,6 +3,7 @@ package com.sns.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sns.domain.dto.post.PostCreateReq;
 import com.sns.domain.dto.post.PostDto;
+import com.sns.domain.dto.post.PostUpdateReq;
 import com.sns.exception.AppException;
 import com.sns.exception.ErrorCode;
 import com.sns.service.PostService;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -135,7 +137,7 @@ class PostControllerTest {
                         .with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.postId").value(postDto.getId()))
+                .andExpect(jsonPath("$.result.id").value(postDto.getId()))
                 .andExpect(jsonPath("$.result.title").value(postDto.getTitle()))
                 .andExpect(jsonPath("$.result.body").value(postDto.getBody()))
                 .andExpect(jsonPath("$.result.userName").value(postDto.getUserName()))
@@ -151,6 +153,98 @@ class PostControllerTest {
           -- (작성자 불일치)
           -- (DB 에러)
      */
+    @Test
+    @WithMockUser
+    void 수정성공() throws Exception {
+        PostUpdateReq req = PostUpdateReq.builder()
+                .title("titleUpdateTest")
+                .body("bodyUpdateTest")
+                .build();
+
+        PostDto postDto = PostDto.builder()
+                .id(1L)
+                .build();
+
+        when(postService.update(any(), any(), any()))
+                .thenReturn(postDto);
+
+        mockMvc.perform(put(String.format("/api/v1/posts/%s", postDto.getId()))
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(req)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultCode").value("SUCCESS"))
+                .andExpect(jsonPath("$.result.postId").value(1L))
+                .andExpect(jsonPath("$.result.message").value("포스트 수정 완료"));
+
+    }
+
+    @Test
+    @WithMockUser
+    void 수정실패_인증실패() throws Exception {
+        PostUpdateReq req = PostUpdateReq.builder()
+                .title("titleUpdateTest")
+                .body("bodyUpdateTest")
+                .build();
+
+        when(postService.update(any(), any(), any()))
+                .thenThrow(new AppException(ErrorCode.INVALID_TOKEN, ErrorCode.INVALID_TOKEN.getMessage()));
+
+        mockMvc.perform(put("/api/v1/posts/1")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(req)))
+                .andDo(print())
+                .andExpect(status().is(ErrorCode.INVALID_TOKEN.getStatus().value()))
+                .andExpect(jsonPath("$.resultCode").value("ERROR"))
+                .andExpect(jsonPath("$.result.errorCode").value("INVALID_TOKEN"))
+                .andExpect(jsonPath("$.result.message").value("잘못된 토큰입니다."));
+    }
+
+    @Test
+    @WithMockUser
+    void 수정실패_작성자불일치() throws Exception {
+        PostUpdateReq req = PostUpdateReq.builder()
+                .title("titleUpdateTest")
+                .body("bodyUpdateTest")
+                .build();
+
+        when(postService.update(any(), any(), any()))
+                .thenThrow(new AppException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage()));
+
+        mockMvc.perform(put("/api/v1/posts/1")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(req)))
+                .andDo(print())
+                .andExpect(status().is(ErrorCode.INVALID_PERMISSION.getStatus().value()))
+                .andExpect(jsonPath("$.resultCode").value("ERROR"))
+                .andExpect(jsonPath("$.result.errorCode").value("INVALID_PERMISSION"))
+                .andExpect(jsonPath("$.result.message").value("사용자가 권한이 없습니다."));
+    }
+
+    @Test
+    @WithMockUser
+    void 수정실패_DB오류() throws Exception {
+        PostUpdateReq req = PostUpdateReq.builder()
+                .title("titleUpdateTest")
+                .body("bodyUpdateTest")
+                .build();
+
+        when(postService.update(any(), any(), any()))
+                .thenThrow(new AppException(ErrorCode.DATABASE_ERROR, ErrorCode.DATABASE_ERROR.getMessage()));
+
+        mockMvc.perform(put("/api/v1/posts/1")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(req)))
+                .andDo(print())
+                .andExpect(status().is(ErrorCode.DATABASE_ERROR.getStatus().value()))
+                .andExpect(jsonPath("$.resultCode").value("ERROR"))
+                .andExpect(jsonPath("$.result.errorCode").value("DATABASE_ERROR"))
+                .andExpect(jsonPath("$.result.message").value("DB에러"));
+    }
 
     /*
         4. 삭제(Delete)
