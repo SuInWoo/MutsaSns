@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PostDto {
 
-    private Long postId;
+    private Long id;
     private String title;
     private String body;
     private String userName;
@@ -30,17 +30,19 @@ public class PostDto {
 
     public static PostDto of(Post post, String userName) {
         return PostDto.builder()
-                .postId(post.getId())
+                .id(post.getId())
                 .title(post.getTitle())
                 .body(post.getBody())
                 .userName(userName)
+                .createdAt(post.getCreatedAt())
+                .lastModifiedAt(post.getLastModifiedAt())
                 .build();
     }
 
 
     public static Page<PostDto> toDtoList(Page<Post> postEntities) {
         Page<PostDto> postDtoList = postEntities.map(m -> PostDto.builder()
-                .postId(m.getId())
+                .id(m.getId())
                 .title(m.getTitle())
                 .body(m.getBody())
                 .userName(m.getUser().getUserName())
