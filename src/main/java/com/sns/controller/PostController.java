@@ -25,9 +25,8 @@ public class PostController {
     @PostMapping
     public Response<PostCreateRes>write(@RequestBody PostCreateReq createReq, @ApiIgnore Authentication authentication) {
         String name = authentication.getName();
-        log.info(name);
         PostDto postDto = postService.write(createReq, name);
-        return Response.success(new PostCreateRes("포스트 등록 완료", postDto.getPostId()));
+        return Response.success(new PostCreateRes("포스트 등록 완료", postDto.getId()));
     }
 
     //Read
@@ -45,13 +44,13 @@ public class PostController {
     @PutMapping("/{postId}")
     public Response<PostUpdateRes> update(@PathVariable Long postId, @RequestBody PostUpdateReq updateReq, @ApiIgnore Authentication authentication) {
         PostDto postDto = postService.update(postId, updateReq, authentication.getName());
-        return Response.success(new PostUpdateRes("포스트 수정 완료", postDto.getPostId()));
+        return Response.success(new PostUpdateRes("포스트 수정 완료", postDto.getId()));
     }
 
     //Delete
     @DeleteMapping("/{postId}")
     public Response<PostDeleteRes> delete(@PathVariable Long postId, @ApiIgnore Authentication authentication) {
         PostDto postDto = postService.delete(postId, authentication.getName());
-        return Response.success(new PostDeleteRes("포스트 삭제 완료", postDto.getPostId()));
+        return Response.success(new PostDeleteRes("포스트 삭제 완료", postDto.getId()));
     }
 }

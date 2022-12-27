@@ -55,7 +55,7 @@ class PostControllerTest {
 
         when(postService.write(any(), any()))
                 .thenReturn(PostDto.builder()
-                        .postId(1L)
+                        .id(1L)
                         .build());
 
         mockMvc.perform(post("/api/v1/posts")
@@ -121,7 +121,7 @@ class PostControllerTest {
     @WithMockUser
     void 읽기성공() throws Exception {
         PostDto postDto = PostDto.builder()
-                .postId(1L)
+                .id(1L)
                 .title("titleTest")
                 .body("bodyTest")
                 .userName("userNameTest")
@@ -131,11 +131,11 @@ class PostControllerTest {
         when(postService.get(any()))
                 .thenReturn(postDto);
 
-        mockMvc.perform(get(String.format("/api/v1/posts/%s", postDto.getPostId()))
+        mockMvc.perform(get(String.format("/api/v1/posts/%s", postDto.getId()))
                         .with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.postId").value(postDto.getPostId()))
+                .andExpect(jsonPath("$.result.postId").value(postDto.getId()))
                 .andExpect(jsonPath("$.result.title").value(postDto.getTitle()))
                 .andExpect(jsonPath("$.result.body").value(postDto.getBody()))
                 .andExpect(jsonPath("$.result.userName").value(postDto.getUserName()))

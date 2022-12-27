@@ -29,11 +29,20 @@ public class PostService {
         User user = userRepo.findByUserName(name)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, String.format("%s는 존재하지 않습니다.", name)));
 
-        Post savedPost = postRepo.save(Post.of(createReq.getTitle(), createReq.getBody(), user));
+        Post post = Post.builder()
+                .title(createReq.getTitle())
+                .body(createReq.getBody())
+                .user(user)
+                .build();
 
-        PostDto postDto = PostDto.of(savedPost, user.getUserName());
+        Post savedPost = postRepo.save(post);
 
-        return postDto;
+        return PostDto.builder()
+                .id(savedPost.getId())
+                .title(savedPost.getTitle())
+                .body(savedPost.getBody())
+                .userName(name)
+                .build();
     }
 
     //Read
@@ -44,7 +53,7 @@ public class PostService {
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, String.format("%d 포스트가 존재하지 않습니다.", postId)));
 
         return PostDto.builder()
-                .postId(post.getId())
+                .id(post.getId())
                 .title(post.getTitle())
                 .body(post.getBody())
                 .userName(post.getUser().getUserName())
